@@ -1,11 +1,16 @@
 {
     "compilerOptions": {
-        "strict": true,
-        "outDir": "./public/js",
-        "lib": ["ES2020", "DOM"],
-        "jsx": "react",
-        "esModuleInterop": true,
-        "target": "ESNext"
+      "strict": true,
+      "outDir": "./public/js",
+      "jsx": "react",
+      "esModuleInterop": true,
+      "target": "ESNext",
+      "lib": ["DOM", "DOM.Iterable", "ES2020", "ESNext"],
+      "forceConsistentCasingInFileNames": true,
+      "module": "esnext",
+      "moduleResolution": "node",
+      "noUnusedLocals": true,
+      "noUnusedParameters": true
     },
-    "include": ["./src/ts/**/*.ts", "./src/ts/**/*.tsx"]
-}
+    "include": ["./src/ts/**/*", "../sharedts/**/*.ts"]
+  }

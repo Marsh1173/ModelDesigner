@@ -1,0 +1,50 @@
+@SliderHeight: 1.5rem;
+@SliderThumbColor: rgb(0, 125, 184);
+@SliderThumbColorPressed: rgb(0, 117, 172);
+
+/* The slider itself */
+.SliderInput {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: calc(@SliderHeight - 4px);
+
+    background: #00000044;
+    border: 1px solid rgba(0, 0, 0, 0.63);
+    border-radius: 10px;
+    outline: none;
+
+    -webkit-transition: all 0.05s;
+    transition: all 0.05s;
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.SliderInput::-webkit-rgb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: @SliderHeight; /* Set a specific slider handle width */
+    height: @SliderHeight; /* Slider handle height */
+    background: @SliderThumbColor;
+    cursor: pointer; /* Cursor on hover */
+    border-radius: 10px;
+}
+.SliderInput::-moz-range-thumb {
+    width: @SliderHeight; /* Set a specific slider handle width */
+    height: @SliderHeight; /* Slider handle height */
+    background: @SliderThumbColor;
+    border-radius: 10px;
+}
+
+.SliderInput::-webkit-slider-thumb:hover {
+    background: @SliderThumbColorPressed;
+}
+.SliderInput::-moz-range-thumb:hover {
+    background: @SliderThumbColorPressed;
+}
+
+.SliderInput::-webkit-slider-thumb:active {
+    background: @SliderThumbColorPressed;
+}
+.SliderInput::-moz-range-thumb:active {
+    background: @SliderThumbColorPressed;
+}
