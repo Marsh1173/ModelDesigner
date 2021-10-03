@@ -1,44 +1,58 @@
 import React, { Component } from "react";
 import { OptionsCache } from "../../../DataAccessors/OptionsCache";
-import { Slider } from "../../GenericComponents/Slider/Slider";
+import { Looper } from "../../../Model/Looper/Looper";
+import { RootJoint } from "../../../Model/Rig/RootJoint/RootJoint";
 
 export class MainComponent extends Component<any, {}> {
-    private readonly percentDisplay: React.RefObject<HTMLParagraphElement>;
+    private pauseRef: React.RefObject<HTMLButtonElement>;
 
     constructor(props: any) {
         super(props);
-        this.percentDisplay = React.createRef();
+
+        this.pauseRef = React.createRef();
     }
 
     render() {
         return (
             <div className="MainComponent">
                 <div className="mainButtons">
-                    <button className="mainControlButton">&#8635;</button>
-                    <button className="mainControlButton">&lt;&lt;</button>
-                    <button className="mainControlButton">| |</button>
-                    <button className="mainControlButton">&gt;&gt;</button>
-                </div>
-                <div className="sliderContainer">
-                    <p>0% -</p>
-                    <Slider
-                        externalSliderFunc={(value) => {
-                            OptionsCache.frameSpeed = value;
-                            this.percentDisplay.current!.innerHTML = this.getPercentDisplay();
+                    <button
+                        className="mainControlButton"
+                        onClick={() => {
+                            RootJoint.resetAnimation();
                         }}
-                        initValue={OptionsCache.frameSpeed}
-                        min={0}
-                        max={200}
-                        step={10}
-                    ></Slider>
-                    <p>- 200%</p>
+                    >
+                        &#8635;
+                    </button>
+                    <button className="mainControlButton" onClick={() => this.skipFrameBackward()}>
+                        {"|<|"}
+                    </button>
+                    <button className="mainControlButton" ref={this.pauseRef} onClick={() => this.togglePause()}>
+                        | |
+                    </button>
+                    <button className="mainControlButton" onClick={() => this.skipFrameForward()}>
+                        {"|>|"}
+                    </button>
                 </div>
-                <p ref={this.percentDisplay}>{this.getPercentDisplay()}</p>
             </div>
         );
     }
 
-    private getPercentDisplay() {
-        return "Speed: " + OptionsCache.frameSpeed + "%";
+    togglePause() {
+        if (this.pauseRef.current == null) return;
+        OptionsCache.paused = !OptionsCache.paused;
+        if (OptionsCache.paused) {
+            this.pauseRef.current.innerText = ">";
+        } else {
+            this.pauseRef.current.innerText = "| |";
+        }
+    }
+
+    skipFrameBackward() {
+        Looper.update(-1 / 20);
+    }
+
+    skipFrameForward() {
+        Looper.update(1 / 20);
     }
 }

@@ -2,6 +2,8 @@ import React from "react";
 import "./NumberInputStyles.less";
 
 export class NumberInput extends React.Component<NumberInputProp, {}> {
+    private numberRef: React.RefObject<HTMLTextAreaElement> = React.createRef();
+
     constructor(props: NumberInputProp) {
         super(props);
 
@@ -24,10 +26,14 @@ export class NumberInput extends React.Component<NumberInputProp, {}> {
         }
     }
 
+    setValue(value: number) {
+        this.numberRef!.current!.value = value.toPrecision();
+    }
+
     render() {
         return (
             <div className="NumberInput">
-                <textarea defaultValue={this.props.initValue} onBlur={this.handleFocusOut} onChange={this.verifyInput} />
+                <textarea ref={this.numberRef} defaultValue={this.props.initValue} onBlur={this.handleFocusOut} onChange={this.verifyInput} />
             </div>
         );
     }

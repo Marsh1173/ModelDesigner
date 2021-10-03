@@ -2,6 +2,8 @@ import React from "react";
 import "./TextInputStyles.less";
 
 export class TextInput extends React.Component<TextInputProp, {}> {
+    private textRef: React.RefObject<HTMLTextAreaElement> = React.createRef();
+
     constructor(props: TextInputProp) {
         super(props);
 
@@ -19,10 +21,14 @@ export class TextInput extends React.Component<TextInputProp, {}> {
         }
     }
 
+    setValue(value: string) {
+        this.textRef!.current!.value = value;
+    }
+
     render() {
         return (
             <div className="TextInput">
-                <textarea defaultValue={this.props.initValue} onBlur={this.handleFocusOut} onChange={this.verifyInput} />
+                <textarea ref={this.textRef} defaultValue={this.props.initValue} onBlur={this.handleFocusOut} onChange={this.verifyInput} spellCheck="false" />
             </div>
         );
     }

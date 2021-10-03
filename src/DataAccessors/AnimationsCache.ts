@@ -21,7 +21,31 @@ export class AnimationsCache {
         });
     }
 
+    public static attemptChangeSelectedAnimationName(newName: string): boolean {
+        if (newName == "") {
+            window.alert("Must input a valid name");
+            return false;
+        }
+
+        for (let i: number = 0; i < this.animations.length; i++) {
+            if (this.animations[i].animationName === newName && i != this.selectedAnimationIndex) {
+                window.alert("You can't have to animations with the same name!");
+                return false;
+            }
+        }
+        this.animations[this.selectedAnimationIndex].animationName = newName;
+        return true;
+    }
+
     public static processAnimationSelectChange() {
+        while (this.selectedAnimationIndex >= this.animations.length) {
+            this.selectedAnimationIndex--;
+        }
+        if (this.animations.length <= 0) {
+            this.animations = StartAnimations;
+            this.selectedAnimationIndex = 0;
+        }
+
         this.animationSelectObservers.forEach((observer) => {
             observer.onAnimationSelectChange();
         });

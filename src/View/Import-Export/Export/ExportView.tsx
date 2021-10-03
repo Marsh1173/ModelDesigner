@@ -14,7 +14,7 @@ export class ExportView extends Component<{}, {}> {
             <div className="ExportView container">
                 <button
                     onClick={() => {
-                        this.exportDataDiv.current!.innerText = this.makeid(2000);
+                        this.exportDataDiv.current!.innerText = this.makeid(500);
                     }}
                     className="button"
                 >

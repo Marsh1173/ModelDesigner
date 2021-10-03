@@ -9,11 +9,14 @@ import { ControlView } from "../View/CanvasControls/ControlView";
 import { ImportView } from "../View/Import-Export/Import/ImportView";
 import { ExportView } from "../View/Import-Export/Export/ExportView";
 import "./mainStyles.less";
+import { Initializer } from "../Model/Initializer/Initializer";
 
 let firstKey: number = 0;
 export function getNextKey(): number {
     return firstKey++;
 }
+
+Initializer.InitializeEverything();
 
 class MainDiv extends Component<{}, {}> {
     render() {

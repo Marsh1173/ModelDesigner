@@ -1,5 +1,8 @@
+import { JointAnimationInterface } from "./JointAnimation";
+
 export interface AnimationInterface {
     animationName: string;
     endAnimationName: string;
-    time: number;
+    duration: number;
+    jointAnimations: JointAnimationInterface[];
 }

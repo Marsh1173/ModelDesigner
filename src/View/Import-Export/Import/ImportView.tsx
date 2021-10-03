@@ -1,33 +1,59 @@
 import React, { Component } from "react";
 import "./ImportViewStyles.less";
+import { ImportPresenter } from "../../../Presenter/ImportPresenter/ImportPresenter";
 
 export class ImportView extends Component<{}, {}> {
     private importDataDiv: React.RefObject<HTMLTextAreaElement>;
+    private importPhotoInputElem: React.RefObject<HTMLInputElement>;
 
     constructor(props: any) {
         super(props);
 
         this.importDataDiv = React.createRef();
+        this.importPhotoInputElem = React.createRef();
     }
     render() {
         return (
             <div className="ImportView container">
                 <div>
+                    <input
+                        ref={this.importPhotoInputElem}
+                        className="importPhotoInput"
+                        type="file"
+                        accept="image/*"
+                        multiple={false}
+                        onChange={(e) => {
+                            ImportPresenter.importPhoto(e);
+                        }}
+                    ></input>
+                </div>
+                <div className="buttonDiv">
+                    <div>
+                        <button
+                            className="button"
+                            onClick={() => {
+                                ImportPresenter.processImportText(this.importDataDiv);
+                            }}
+                        >
+                            Import Data
+                        </button>
+                        <button
+                            className="importData button"
+                            onClick={() => {
+                                ImportPresenter.clearImportField(this.importDataDiv);
+                            }}
+                        >
+                            Clear
+                        </button>
+                    </div>
+
                     <button
-                        className="button"
+                        className="importPhotoButton button"
                         onClick={() => {
-                            alert("You imported!");
+                            this.importPhotoInputElem.current?.click();
                         }}
                     >
-                        Import Data
-                    </button>
-                    <button
-                        className="importData button"
-                        onClick={() => {
-                            this.importDataDiv.current!.value = "";
-                        }}
-                    >
-                        Clear
+                        Import Photo
                     </button>
                 </div>
 
