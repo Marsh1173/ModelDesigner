@@ -27,5 +27,6 @@
     "scripts": {
         "dev": "yarn && npx webpack serve",
         "build": "yarn && webpack --config webpack.prod.js"
-    }
+    },
+    "dependencies": {}
 }

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { OptionsCache } from "../../../DataAccessors/OptionsCache";
 import { Slider } from "../../GenericComponents/Slider/Slider";
+import { CanvasControlsPresenter } from "../../../Presenter/CanvasControlsPresenter";
 
 export class ButtonsComponent extends Component<{}, {}> {
     private readonly percentDisplay: React.RefObject<HTMLParagraphElement>;
@@ -16,8 +17,9 @@ export class ButtonsComponent extends Component<{}, {}> {
                     <p>0%</p>
                     <Slider
                         externalSliderFunc={(value) => {
-                            OptionsCache.frameSpeed = value;
-                            this.percentDisplay.current!.innerHTML = this.getPercentDisplay();
+                            if (this.percentDisplay.current) {
+                                CanvasControlsPresenter.onSpeedSliderChange(value, this.percentDisplay.current);
+                            }
                         }}
                         initValue={OptionsCache.frameSpeed}
                         min={0}
@@ -26,12 +28,8 @@ export class ButtonsComponent extends Component<{}, {}> {
                     ></Slider>
                     <p>200%</p>
                 </div>
-                <p ref={this.percentDisplay}>{this.getPercentDisplay()}</p>
+                <p ref={this.percentDisplay}>{CanvasControlsPresenter.getPercentText()}</p>
             </div>
         );
-    }
-
-    private getPercentDisplay() {
-        return "Speed: " + OptionsCache.frameSpeed + "%";
     }
 }

@@ -5,7 +5,7 @@ import { Joint } from "../Joint/Joint";
 import { renderJointLine, renderJointPoint } from "../Joint/JointRender";
 
 export class RootJoint {
-    public static joints: Joint[] = [];
+    public static joint: Joint | undefined = undefined;
 
     private static animationState: number = 0;
     private static animationPercent: number = 0;
@@ -19,33 +19,24 @@ export class RootJoint {
             if (this.animationState >= this.animation.duration) this.endAnimation();
             else if (this.animationState < 0) this.animationState += this.animation.duration;
         }
-        this.joints.forEach((joint) => {
-            joint.updateAndRender(ctx, this.animationPercent);
-        });
+        if (this.joint) this.joint.updateAndRender(ctx, this.animationPercent);
 
         this.renderRig(ctx);
     }
 
     private static renderRig(ctx: CanvasRenderingContext2D) {
         if (OptionsCache.showBones) {
-            ctx.beginPath();
             ctx.strokeStyle = "#ff6600";
             ctx.lineWidth = 4;
             ctx.globalAlpha = 0.5;
 
-            this.joints.forEach((joint) => {
-                renderJointLine(joint, ctx);
-            });
+            if (this.joint) renderJointLine(this.joint, ctx);
 
-            ctx.closePath();
-            ctx.stroke();
             ctx.globalAlpha = 1;
         }
         if (OptionsCache.showJoints) {
             ctx.fillStyle = "red";
-            this.joints.forEach((joint) => {
-                renderJointPoint(joint, ctx);
-            });
+            if (this.joint) renderJointPoint(this.joint, ctx);
         }
     }
 
@@ -56,9 +47,10 @@ export class RootJoint {
         this.animation = animation;
 
         if (animation != undefined) {
-            this.joints.forEach((joint) => {
-                this.recursiveAssignAnimation(joint, animation);
-            });
+            if (this.joint) {
+                this.recursiveClearAnimation(this.joint);
+                this.recursiveAssignAnimation(this.joint, animation);
+            }
         }
     }
 
@@ -73,13 +65,19 @@ export class RootJoint {
 
     private static recursiveAssignAnimation(joint: Joint, animation: AnimationInterface) {
         animation.jointAnimations.forEach((jointAnimation) => {
-            if (jointAnimation.jointName === joint.name) {
+            if (jointAnimation.jointName == joint.name) {
                 joint.assignAnimation(jointAnimation);
             }
         });
 
         joint.joints.forEach((childJoint) => {
             this.recursiveAssignAnimation(childJoint, animation);
+        });
+    }
+    private static recursiveClearAnimation(joint: Joint) {
+        joint.assignAnimation(undefined);
+        joint.joints.forEach((childJoint) => {
+            this.recursiveClearAnimation(childJoint);
         });
     }
 

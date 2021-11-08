@@ -1,5 +1,5 @@
 import React from "react";
-import { ImageCache } from "../../DataAccessors/ImageCache";
+import { ImageCache } from "../DataAccessors/ImageCache";
 
 export class ImportPresenter {
     public static clearImportField(ref: React.RefObject<HTMLTextAreaElement>) {
@@ -25,7 +25,8 @@ export class ImportPresenter {
 
                 if (loadEvent.target && !(loadEvent.target.result instanceof ArrayBuffer) && loadEvent.target.result != null) {
                     newImg.src = loadEvent.target.result;
-                    ImageCache.uploadImageToCache(newImg, e.target.files!.item(0)!.name);
+                    let name: string = e.target.files!.item(0)!.name;
+                    ImageCache.uploadImageToCache(newImg, name);
                 }
             };
 

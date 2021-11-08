@@ -23,9 +23,9 @@ export class MainCanvasHandler {
 
             this.setTransform(this.ctx);
 
-            this.drawFloor(this.ctx);
-
             RootJoint.updateAndRender(elapsedTime, this.ctx);
+
+            this.drawFloor(this.ctx);
         }
     }
 

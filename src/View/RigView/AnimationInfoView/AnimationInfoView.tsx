@@ -38,7 +38,7 @@ export const AnimationInfoView: React.FC<{}> = () => {
                         AnimationsCache.processAnimationListChange();
                     }}
                 >
-                    Create new animation
+                    New Animation
                 </button>
             </div>
             <AnimationViewComponent></AnimationViewComponent>

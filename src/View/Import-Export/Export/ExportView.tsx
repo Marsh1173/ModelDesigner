@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./ExportViewStyles.less";
+import { ExportPresenter } from "../../../Presenter/ExportPresenter";
 
 export class ExportView extends Component<{}, {}> {
     private exportDataDiv: React.RefObject<HTMLParagraphElement>;
@@ -14,7 +15,7 @@ export class ExportView extends Component<{}, {}> {
             <div className="ExportView container">
                 <button
                     onClick={() => {
-                        this.exportDataDiv.current!.innerText = this.makeid(500);
+                        if (this.exportDataDiv.current) this.exportDataDiv.current.innerText = ExportPresenter.generateDummyExportData(500);
                     }}
                     className="button"
                 >
@@ -22,14 +23,7 @@ export class ExportView extends Component<{}, {}> {
                 </button>
                 <button
                     onClick={() => {
-                        var doc = document,
-                            sel,
-                            range;
-                        sel = window.getSelection();
-                        range = doc.createRange();
-                        range.selectNodeContents(this.exportDataDiv.current!);
-                        sel?.removeAllRanges();
-                        sel?.addRange(range);
+                        if (this.exportDataDiv.current) ExportPresenter.selectAllInElem(this.exportDataDiv.current);
                     }}
                     className="button"
                 >
@@ -37,24 +31,19 @@ export class ExportView extends Component<{}, {}> {
                 </button>
                 <button
                     onClick={() => {
-                        this.exportDataDiv.current!.innerText = "";
+                        if (this.exportDataDiv.current) ExportPresenter.clearElemText(this.exportDataDiv.current);
                     }}
                     className="button"
                 >
                     Clear
                 </button>
                 <p className="exportData" ref={this.exportDataDiv}></p>
+                <p>TODO:</p>
+                <p>render on top of parent</p>
+                <p>Animation view - rotation, base pos, imgRotation</p>
+                <p>Animation view and canvas dragging/dropping</p>
+                <p>Importing and exporting functionality</p>
             </div>
         );
-    }
-
-    private makeid(length: number): string {
-        var result = "";
-        var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789       ";
-        var charactersLength = characters.length;
-        for (var i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
     }
 }

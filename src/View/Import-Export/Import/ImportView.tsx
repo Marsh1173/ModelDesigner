@@ -1,64 +1,33 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import "./ImportViewStyles.less";
-import { ImportPresenter } from "../../../Presenter/ImportPresenter/ImportPresenter";
+import { ImportJson } from "./ImportJson/ImportJson";
+import { ImportImages } from "./ImportImages/ImportImages";
 
-export class ImportView extends Component<{}, {}> {
-    private importDataDiv: React.RefObject<HTMLTextAreaElement>;
-    private importPhotoInputElem: React.RefObject<HTMLInputElement>;
+export const ImportView: React.FC<{}> = () => {
+    const [tabState, switchTab] = useState("image");
 
-    constructor(props: any) {
-        super(props);
-
-        this.importDataDiv = React.createRef();
-        this.importPhotoInputElem = React.createRef();
-    }
-    render() {
-        return (
-            <div className="ImportView container">
-                <div>
-                    <input
-                        ref={this.importPhotoInputElem}
-                        className="importPhotoInput"
-                        type="file"
-                        accept="image/*"
-                        multiple={false}
-                        onChange={(e) => {
-                            ImportPresenter.importPhoto(e);
-                        }}
-                    ></input>
+    return (
+        <div className="ImportView container">
+            <div className="importTabs">
+                <div
+                    onClick={() => {
+                        switchTab("json");
+                    }}
+                    className={`importJsonTab ${tabState == "json" ? "selected" : ""}`}
+                >
+                    Import Json
                 </div>
-                <div className="buttonDiv">
-                    <div>
-                        <button
-                            className="button"
-                            onClick={() => {
-                                ImportPresenter.processImportText(this.importDataDiv);
-                            }}
-                        >
-                            Import Data
-                        </button>
-                        <button
-                            className="importData button"
-                            onClick={() => {
-                                ImportPresenter.clearImportField(this.importDataDiv);
-                            }}
-                        >
-                            Clear
-                        </button>
-                    </div>
-
-                    <button
-                        className="importPhotoButton button"
-                        onClick={() => {
-                            this.importPhotoInputElem.current?.click();
-                        }}
-                    >
-                        Import Photo
-                    </button>
+                <div
+                    onClick={() => {
+                        switchTab("image");
+                    }}
+                    className={`importImagesTab ${tabState == "image" ? "selected" : ""}`}
+                >
+                    Images
                 </div>
-
-                <textarea className="importDataField" placeholder="Put in your formatted input data..." ref={this.importDataDiv}></textarea>
             </div>
-        );
-    }
-}
+            {tabState == "json" && <ImportJson></ImportJson>}
+            {tabState == "image" && <ImportImages></ImportImages>}
+        </div>
+    );
+};
